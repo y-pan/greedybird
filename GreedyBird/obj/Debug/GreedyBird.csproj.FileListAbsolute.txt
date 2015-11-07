@@ -1,0 +1,6 @@
+s:\Documents\My Web Sites\GreedyBird\GreedyBird\bin\GreedyBird.dll.config
+s:\Documents\My Web Sites\GreedyBird\GreedyBird\bin\GreedyBird.dll
+s:\Documents\My Web Sites\GreedyBird\GreedyBird\bin\GreedyBird.pdb
+s:\Documents\My Web Sites\GreedyBird\GreedyBird\obj\Debug\GreedyBird.csprojResolveAssemblyReference.cache
+s:\Documents\My Web Sites\GreedyBird\GreedyBird\obj\Debug\GreedyBird.dll
+s:\Documents\My Web Sites\GreedyBird\GreedyBird\obj\Debug\GreedyBird.pdb
