@@ -6,7 +6,7 @@ module objects{
 		
 		constructor(){
 			super(assets.getResult("background"));
-			this._dx = -2;
+			this._dx = -1;
 			this._reset();
 		}
 		

@@ -8,20 +8,19 @@ var objects;
     var Dragon = (function (_super) {
         __extends(Dragon, _super);
         function Dragon() {
-            _super.call(this, "blackDragon");
-            this._dy = 5;
-            this._reset();
-            this._height = this.getBounds().height;
-            this._width = this.getBounds().width;
+            _super.call(this, blackDragonAtlas, "blackDragon", 300, 100);
+            this._dx = -2;
+            //this._reset();
         }
         // PUBLIC METHODS
         /**
          * Update Method for Ocean Class
          */
         Dragon.prototype.update = function () {
-            this.x += this._dx;
-            this.y += this._dy;
+            //this.x += this._dx;
+            //this.y += this._dy;
             this._checkBounds();
+            this.tickEnabled = !this.tickEnabled;
         };
         // PRIATE METHODS
         /**
@@ -29,20 +28,20 @@ var objects;
          */
         Dragon.prototype._reset = function () {
             this._dx = Math.floor(Math.random() * 4) + 2; // horizontal drift
-            this._dy = Math.floor(Math.random() * 5) - 2; // verticla speed
-            this.y = -(Math.floor(Math.random() * 430) + 50);
-            this.x = -this._width * 5;
+            // this._dy = Math.floor(Math.random() * 5) - 2; // verticla speed
+            //this.y = -(Math.floor(Math.random() * 430) + 50);
+            this.x = 500;
         };
         /**
          * Check to see if ocean needs to be reset
          */
         Dragon.prototype._checkBounds = function () {
-            if (this.x <= 640) {
+            if (this.x <= 0) {
                 this._reset();
             }
         };
         return Dragon;
-    })(createjs.Bitmap);
+    })(objects.GameObject);
     objects.Dragon = Dragon;
 })(objects || (objects = {}));
 //# sourceMappingURL=dragon.js.map

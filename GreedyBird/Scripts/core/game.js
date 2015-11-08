@@ -23,7 +23,10 @@ var stage;
 var stats;
 var state;
 var currentState; // alias for our current state
-var atlas;
+var redBirdAtlas;
+var blackDragonAtlas;
+var redBirdData;
+var blackDragonData;
 // GAME OBJECTS
 var menu;
 var game;
@@ -41,11 +44,44 @@ var manifest = [
     { id: "thunder", src: "../../Assets/audio/thunder.ogg" },
     { id: "yay", src: "../../Assets/audio/yay.ogg" }
 ];
+//frames: {width:64, height:64, count:20, regX: 32, regY:64, spacing:0, margin:0}
+redBirdData = {
+    "images": [
+        "../../Assets/images/redBird.png"
+    ],
+    "frames": [
+        [0, 0, 100, 80, 0, 50, 40],
+        [100, 0, 100, 80, 0, 50, 40],
+        [200, 0, 100, 80, 0, 50, 40],
+        [300, 0, 100, 80, 0, 50, 40]
+    ],
+    "animations": {
+        fly: [0, 3],
+        speed: 0.01
+    }
+};
+blackDragonData = {
+    "images": [
+        "../../Assets/images/blackDragon.png"
+    ],
+    "frames": [
+        [0, 0, 100, 100, 0, 50, 50],
+        [100, 0, 100, 100, 0, 50, 50],
+        [200, 0, 100, 100, 0, 50, 50],
+        [300, 0, 100, 100, 0, 50, 50]
+    ],
+    "animations": {
+        fly: [0, 3],
+        speed: 0.01
+    }
+};
 function preload() {
     assets = new createjs.LoadQueue();
     assets.installPlugin(createjs.Sound);
     assets.on("complete", init, this);
     assets.loadManifest(manifest);
+    redBirdAtlas = new createjs.SpriteSheet(redBirdData);
+    blackDragonAtlas = new createjs.SpriteSheet(blackDragonData);
 }
 function init() {
     canvas = document.getElementById("canvas"); // reference to canvas element

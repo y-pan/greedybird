@@ -8,14 +8,15 @@ var objects;
     var Bird = (function (_super) {
         __extends(Bird, _super);
         function Bird() {
-            _super.call(this, "bird");
-            this.x = 20;
+            _super.call(this, redBirdAtlas, "redBird", 100, 100);
+            this.x = 150;
         }
         /**
          * Update Method for Plane Class
          */
         Bird.prototype.update = function () {
-            this.y = stage.mouseX;
+            this.y = (stage.mouseY < this._height) ? this._height : stage.mouseY;
+            this.tickEnabled = !this.tickEnabled;
         };
         return Bird;
     })(objects.GameObject);

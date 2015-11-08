@@ -9,7 +9,7 @@ var objects;
         __extends(Background, _super);
         function Background() {
             _super.call(this, assets.getResult("background"));
-            this._dx = -2;
+            this._dx = -1;
             this._reset();
         }
         // PUBLIC METHODS

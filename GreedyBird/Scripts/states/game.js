@@ -8,7 +8,6 @@ var states;
     // GAME CLASS
     var Game = (function (_super) {
         __extends(Game, _super);
-        //private _clouds:objects.Cloud[];
         // CONSTRUCTOR
         function Game() {
             _super.call(this);
@@ -21,21 +20,15 @@ var states;
             // add plane
             this._bird = new objects.Bird();
             this.addChild(this._bird);
-            //this._island = new objects.Island();
-            //this.addChild(this._island);
+            console.log("bird: " + this._bird.getBounds().height);
             this._dragon = new objects.Dragon();
-            //this._clouds = new objects.Cloud[3];
-            /* for (var index = 0; index < this._clouds.length; index++) {
-                 this._cloud[index] = new objects.Cloud();
-                 
-                 this.addChild(this._cloud[index]);
-             }*/
+            console.log("dragon: " + this._bird.getBounds().height);
             stage.addChild(this);
         };
         Game.prototype.update = function () {
             this._bird.update();
             this._background.update();
-            this._dragon.update();
+            //this._dragon.update();
             /*
             for (var index = 0; index < this._clouds.length; index++) {
                 this._dragon[index].update();

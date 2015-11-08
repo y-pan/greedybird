@@ -32,12 +32,15 @@ var stage: createjs.Stage;
 var stats: Stats;
 var state: number;
 var currentState: objects.Scene; // alias for our current state
-var atlas : createjs.SpriteSheet;
-
+var redBirdAtlas : createjs.SpriteSheet;
+var blackDragonAtlas: createjs.SpriteSheet;
+var redBirdData: {};
+var blackDragonData: {};
 // GAME OBJECTS
 var menu: states.Menu;
 var game: states.Game;
 var over: states.Over;
+
 
 // manifest of all our assets
 var manifest = [
@@ -57,11 +60,48 @@ var manifest = [
     { id: "yay", src: "../../Assets/audio/yay.ogg" }
 ];
 
+//frames: {width:64, height:64, count:20, regX: 32, regY:64, spacing:0, margin:0}
+redBirdData = {
+    "images": [ 
+        "../../Assets/images/redBird.png"
+    ],
+    "frames": [
+        [0, 0, 100, 80, 0, 50, 40],
+        [100, 0, 100, 80, 0, 50, 40],
+        [200, 0, 100, 80, 0, 50, 40],
+        [300, 0, 100, 80, 0, 50, 40]
+    ],
+    "animations": {
+        fly: [0, 3],
+        speed: 0.01
+    }
+};
+
+blackDragonData = {
+    "images": [
+        "../../Assets/images/blackDragon.png"
+    ],
+    "frames": [
+        [0,   0, 100, 100, 0, 50, 50],
+        [100, 0, 100, 100, 0, 50, 50],
+        [200, 0, 100, 100, 0, 50, 50],
+        [300, 0, 100, 100, 0, 50, 50]
+    ],
+    "animations": {
+        fly: [0, 3],
+        speed:0.01
+    }    
+}
+
+
 function preload(): void {
     assets = new createjs.LoadQueue();
     assets.installPlugin(createjs.Sound);
     assets.on("complete", init, this);
     assets.loadManifest(manifest);
+
+    redBirdAtlas = new createjs.SpriteSheet(redBirdData);
+    blackDragonAtlas = new createjs.SpriteSheet(blackDragonData);
 }
 
 function init():void {
