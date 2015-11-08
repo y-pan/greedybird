@@ -16,7 +16,10 @@
 
 /// <reference path="../objects/bird.ts" />
 
+
+
 /// <reference path="../objects/dragon.ts" />
+
 
 /// <reference path="../objects/scene.ts" />
 
@@ -72,8 +75,10 @@ redBirdData = {
         [300, 0, 100, 80, 0, 50, 40]
     ],
     "animations": {
-        fly: [0, 3],
-        speed: 0.01
+        fly: {
+            frames:[0, 3],
+            speed: 0.0005
+        }
     }
 };
 
@@ -88,8 +93,10 @@ blackDragonData = {
         [300, 0, 100, 100, 0, 50, 50]
     ],
     "animations": {
-        fly: [0, 3],
-        speed:0.01
+        fly: {
+            frames: [0, 3],
+            speed: 0.0005
+        } /*speed not work ? */
     }    
 }
 

@@ -56,8 +56,10 @@ redBirdData = {
         [300, 0, 100, 80, 0, 50, 40]
     ],
     "animations": {
-        fly: [0, 3],
-        speed: 0.01
+        fly: {
+            frames: [0, 3],
+            speed: 0.0005
+        }
     }
 };
 blackDragonData = {
@@ -71,8 +73,10 @@ blackDragonData = {
         [300, 0, 100, 100, 0, 50, 50]
     ],
     "animations": {
-        fly: [0, 3],
-        speed: 0.01
+        fly: {
+            frames: [0, 3],
+            speed: 0.0005
+        } /*speed not work ? */
     }
 };
 function preload() {

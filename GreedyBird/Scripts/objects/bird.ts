@@ -10,12 +10,14 @@ module objects{
 		
 		/**
 		 * Update Method for Plane Class
-		 */		
-        update() {			
+		 */	      
+
+        	
+        public update():void {			
             
             this.y = (stage.mouseY < this._height) ? this._height : stage.mouseY;	
-            
-            this.tickEnabled = !this.tickEnabled;
+
+            this.tickEnabled = (createjs.Ticker.getTicks() % 4 == 0) ? true : false;
             
         }
 
