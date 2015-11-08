@@ -16,7 +16,7 @@ var objects;
          * Update Method for Ocean Class
          */
         Dragon.prototype.update = function () {
-            this.tickEnabled = (createjs.Ticker.getTicks() % 4 == 1) ? true : false;
+            this.tickEnabled = (createjs.Ticker.getTicks() % 8 == 1) ? true : false;
             this.x += this._dx;
             this.y += this._dy;
             this._checkBounds();

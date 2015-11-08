@@ -17,6 +17,7 @@
 /// <reference path="../objects/bird.ts" />
 
 
+/// <reference path="../objects/feather.ts" />
 
 /// <reference path="../objects/dragon.ts" />
 
@@ -35,10 +36,15 @@ var stage: createjs.Stage;
 var stats: Stats;
 var state: number;
 var currentState: objects.Scene; // alias for our current state
+
 var redBirdAtlas : createjs.SpriteSheet;
 var blackDragonAtlas: createjs.SpriteSheet;
+var redFeatherAtlas: createjs.SpriteSheet;
+
 var redBirdData: {};
 var blackDragonData: {};
+var redFeatherData: {};
+
 // GAME OBJECTS
 var menu: states.Menu;
 var game: states.Game;
@@ -54,8 +60,10 @@ var manifest = [
     { id: "nextButton", src: "../../Assets/images/nextButton.png" },
     { id: "backButton", src: "../../Assets/images/backButton.png" },
     { id: "playAgainButton", src: "../../Assets/images/playAgainButton.png" },
+    { id: "heart", src: "../../Assets/images/heart.png" },
 
     { id: "redBird", src: "../../Assets/images/redBird.png" },
+    { id: "redFeather", src: "../../Assets/images/redFeather.png" },
     { id: "blackDragon", src: "../../Assets/images/blackDragon.png" },
 
     { id: "engine", src: "../../Assets/audio/engine.ogg" },
@@ -79,6 +87,19 @@ redBirdData = {
             frames:[0, 3],
             speed: 0.0005
         }
+    }
+};
+
+redFeatherData = {
+    "images": [
+        "../../Assets/images/redFeather.png"
+    ],
+    "frames": [
+        [0, 0, 100, 80, 0, 50, 40],
+        [100, 0, 100, 80, 0, 50, 40]        
+    ],
+    "animations": {
+        dropingout: { frames: [0, 1]}
     }
 };
 
@@ -109,6 +130,7 @@ function preload(): void {
 
     redBirdAtlas = new createjs.SpriteSheet(redBirdData);
     blackDragonAtlas = new createjs.SpriteSheet(blackDragonData);
+    redFeatherAtlas = new createjs.SpriteSheet(redFeatherData);
 }
 
 function init():void {

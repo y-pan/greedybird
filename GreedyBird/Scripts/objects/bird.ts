@@ -17,7 +17,7 @@ module objects{
             
             this.y = (stage.mouseY < this._height) ? this._height : stage.mouseY;	
 
-            this.tickEnabled = (createjs.Ticker.getTicks() % 4 == 0) ? true : false;
+            this.tickEnabled = (createjs.Ticker.getTicks() % 6 == 0) ? true : false;
             
         }
 
