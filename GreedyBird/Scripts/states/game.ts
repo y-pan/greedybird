@@ -4,16 +4,16 @@
         // PRIVATE INSTANCE VARIABLES
         private _background:objects.Background;
         private _bird:objects.Bird;
-        private _dragon:objects.Dragon;
+        private _dragon: objects.Dragon;
+        private _coin: objects.Coin;
         private _dragons: objects.Dragon[] = [];       
         private _redFeathers:objects.Feather[] = [];
+        
 
-
-        private _healthLabel: objects.Label;
 
         private _gameOverLabel: objects.Label;
         private _playAgainButton: objects.Button;
-
+       
         //
         private _isGameOver: boolean;
 
@@ -21,10 +21,16 @@
         private _heartImg: createjs.Bitmap;
         private _healthBar: createjs.Shape;
         private _healthBarBorder: createjs.Shape;
-        //private _healthBarBitmap: createjs.Bitmap;
+        private _healthLabel: objects.Label;
+
+        private _coinNum: number;
+        private _moneyBag: createjs.Bitmap;
+        private _coinLabel: objects.Label;
+
         private _featherReady: boolean;        
         private _oldTime: number;
         private _nowTime: number;
+
 
         // CONSTRUCTOR
         constructor() {
@@ -40,7 +46,23 @@
             this._background = new objects.Background();
             this.addChild(this._background);
 
+            // add coin
+            this._coinNum = 0;
+            this._moneyBag = new createjs.Bitmap(assets.getResult("moneyBag"));
+            this._moneyBag.x = 180;
+            this._moneyBag.y = 10;
+            this.addChild(this._moneyBag);
+
+            this._coinLabel = new objects.Label(this._coinNum.toString(), "16px Consolas", "#fff", 220, 20);
+            this._coinLabel.regX = 0;
+            this._coinLabel.regY = 0;
+            this.addChild(this._coinLabel);
+
+            this._coin = new objects.Coin();
+            this.addChild(this._coin);
+
             // health
+            this._health = 100;
             this._heartImg = new createjs.Bitmap(assets.getResult("heart"));
             this._heartImg.x = 10;
             this._heartImg.y = 10;
@@ -49,9 +71,7 @@
             this._healthBarBorder = new createjs.Shape();
             this._healthBarBorder.graphics.beginStroke("#fff").drawRect(50, 15, 100, 4);
             this.addChild(this._healthBarBorder);
-
-            this._health = 100;
-
+            
             this._healthBar = new createjs.Shape();
             this._healthBar.graphics.beginFill("#0f5").drawRect(50, 15, this._health, 4);
             this.addChild(this._healthBar);
@@ -66,12 +86,13 @@
             this._bird = new objects.Bird();            
             this.addChild(this._bird);           
                     
-            
+            // add 3 dragons
             for (var index = 0; index < 3; index++){
                 this._dragons[index] = new objects.Dragon();
                 this.addChild(this._dragons[index]);
             }
 
+ 
 
             // When Game Over +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             this._gameOverLabel = new objects.Label("Game Over", "60px Consolas", "#0ff", 320, 140);
@@ -105,7 +126,8 @@
         public update(): void {
             this._bird.update();
             this._background.update();
-            
+            this._coin.update();
+
             this._updateDragons_CheckCollision();
             this._updateFeathers_RemoveFeathers();
 
@@ -121,6 +143,24 @@
                 }
             }
         }
+
+        private _checkDistanceBetween(object1: objects.Bird, object2: createjs.Sprite): void {
+
+            if (Math.sqrt(Math.pow((object1.x - object2.x), 2) + Math.pow((object1.y - object2.y), 2)) <= 80) {
+
+                // health
+                this._health--;
+                this._updateBirdHealth();
+                this._showHurtEffect();
+
+                if (this._health <= 0) {
+                    this._setGameOver();
+                }
+
+            }
+        }
+
+        // check coin collision
 
         private _updateFeathers_RemoveFeathers(): void {
             if (this._redFeathers.length > 0) {
@@ -169,20 +209,6 @@
             }
         }
 
-        private _checkDistanceBetween(object1: objects.Bird, object2: createjs.Sprite): void {
 
-            if (Math.sqrt(Math.pow((object1.x - object2.x), 2) + Math.pow((object1.y - object2.y), 2)) <= 80){
-
-                // health
-                this._health--;
-                this._updateBirdHealth();      
-                this._showHurtEffect();                
-
-                if (this._health <= 0) {
-                    this._setGameOver();
-                }
-               
-            }
-        }
     }
 } 

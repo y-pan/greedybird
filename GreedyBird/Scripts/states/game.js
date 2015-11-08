@@ -21,7 +21,20 @@ var states;
             // add background
             this._background = new objects.Background();
             this.addChild(this._background);
+            // add coin
+            this._coinNum = 0;
+            this._moneyBag = new createjs.Bitmap(assets.getResult("moneyBag"));
+            this._moneyBag.x = 180;
+            this._moneyBag.y = 10;
+            this.addChild(this._moneyBag);
+            this._coinLabel = new objects.Label(this._coinNum.toString(), "16px Consolas", "#fff", 220, 20);
+            this._coinLabel.regX = 0;
+            this._coinLabel.regY = 0;
+            this.addChild(this._coinLabel);
+            this._coin = new objects.Coin();
+            this.addChild(this._coin);
             // health
+            this._health = 100;
             this._heartImg = new createjs.Bitmap(assets.getResult("heart"));
             this._heartImg.x = 10;
             this._heartImg.y = 10;
@@ -29,7 +42,6 @@ var states;
             this._healthBarBorder = new createjs.Shape();
             this._healthBarBorder.graphics.beginStroke("#fff").drawRect(50, 15, 100, 4);
             this.addChild(this._healthBarBorder);
-            this._health = 100;
             this._healthBar = new createjs.Shape();
             this._healthBar.graphics.beginFill("#0f5").drawRect(50, 15, this._health, 4);
             this.addChild(this._healthBar);
@@ -40,6 +52,7 @@ var states;
             // add bird
             this._bird = new objects.Bird();
             this.addChild(this._bird);
+            // add 3 dragons
             for (var index = 0; index < 3; index++) {
                 this._dragons[index] = new objects.Dragon();
                 this.addChild(this._dragons[index]);
@@ -71,6 +84,7 @@ var states;
         Game.prototype.update = function () {
             this._bird.update();
             this._background.update();
+            this._coin.update();
             this._updateDragons_CheckCollision();
             this._updateFeathers_RemoveFeathers();
         }; // end of update
@@ -83,6 +97,18 @@ var states;
                 }
             }
         };
+        Game.prototype._checkDistanceBetween = function (object1, object2) {
+            if (Math.sqrt(Math.pow((object1.x - object2.x), 2) + Math.pow((object1.y - object2.y), 2)) <= 80) {
+                // health
+                this._health--;
+                this._updateBirdHealth();
+                this._showHurtEffect();
+                if (this._health <= 0) {
+                    this._setGameOver();
+                }
+            }
+        };
+        // check coin collision
         Game.prototype._updateFeathers_RemoveFeathers = function () {
             if (this._redFeathers.length > 0) {
                 //console.log("Feathers: " + this._redFeathers.length);
@@ -122,17 +148,6 @@ var states;
                 this._redFeathers.push(new objects.Feather(this._bird.x, this._bird.y));
                 this.addChild(this._redFeathers[this._redFeathers.length - 1]);
                 this._oldTime = this._nowTime;
-            }
-        };
-        Game.prototype._checkDistanceBetween = function (object1, object2) {
-            if (Math.sqrt(Math.pow((object1.x - object2.x), 2) + Math.pow((object1.y - object2.y), 2)) <= 80) {
-                // health
-                this._health--;
-                this._updateBirdHealth();
-                this._showHurtEffect();
-                if (this._health <= 0) {
-                    this._setGameOver();
-                }
             }
         };
         return Game;

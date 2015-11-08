@@ -65,7 +65,9 @@
     <Content Include="Assets\images\backButton.png" />
     <Content Include="Assets\images\background.png" />
     <Content Include="Assets\images\blackDragon.png" />
+    <Content Include="Assets\images\coin.png" />
     <Content Include="Assets\images\heart.png" />
+    <Content Include="Assets\images\moneyBag.png" />
     <Content Include="Assets\images\nextButton.png" />
     <Content Include="Assets\images\redBird.png" />
     <Content Include="Assets\images\redFeather.png" />
@@ -102,6 +104,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\config\config.ts" />
     <TypeScriptCompile Include="Scripts\core\game.ts" />
+    <TypeScriptCompile Include="Scripts\objects\coin.ts" />
     <TypeScriptCompile Include="Scripts\objects\feather.ts" />
     <TypeScriptCompile Include="Scripts\objects\button.ts" />
     <TypeScriptCompile Include="Scripts\objects\dragon.ts" />

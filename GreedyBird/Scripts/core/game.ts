@@ -22,6 +22,10 @@
 /// <reference path="../objects/dragon.ts" />
 
 
+/// <reference path="../objects/coin.ts" />
+
+
+
 /// <reference path="../objects/scene.ts" />
 
 /// <reference path="../states/over.ts" />
@@ -40,10 +44,13 @@ var currentState: objects.Scene; // alias for our current state
 var redBirdAtlas : createjs.SpriteSheet;
 var blackDragonAtlas: createjs.SpriteSheet;
 var redFeatherAtlas: createjs.SpriteSheet;
+var coinAtlas: createjs.SpriteSheet;
+
 
 var redBirdData: {};
 var blackDragonData: {};
 var redFeatherData: {};
+var coinData: {};
 
 // GAME OBJECTS
 var menu: states.Menu;
@@ -65,13 +72,14 @@ var manifest = [
     { id: "redBird", src: "../../Assets/images/redBird.png" },
     { id: "redFeather", src: "../../Assets/images/redFeather.png" },
     { id: "blackDragon", src: "../../Assets/images/blackDragon.png" },
-
+    { id: "coin", src: "../../Assets/images/coin.png" },
+    { id: "moneyBag", src: "../../Assets/images/moneyBag.png" },
     { id: "engine", src: "../../Assets/audio/engine.ogg" },
     { id: "thunder", src: "../../Assets/audio/thunder.ogg" },
     { id: "yay", src: "../../Assets/audio/yay.ogg" }
 ];
 
-//frames: {width:64, height:64, count:20, regX: 32, regY:64, spacing:0, margin:0}
+
 redBirdData = {
     "images": [ 
         "../../Assets/images/redBird.png"
@@ -89,6 +97,26 @@ redBirdData = {
         }
     }
 };
+//     x, y, width, height, imageIndex*, regX*, regY*
+coinData = {
+    "images": [
+        "../../Assets/images/coin.png"
+    ],
+    "frames": [
+        [0, 0, 50, 50, 0, 25, 25],
+        [50, 0, 50, 50, 0, 25, 25],
+        [100, 0, 50, 50, 0, 25, 25],
+        [150, 0, 50, 50, 0, 25, 25],
+        [200, 0, 50, 50, 0, 25, 25],
+        [250, 0, 50, 50, 0, 25, 25],
+    ],
+    "animations": {
+        // start, end, next*, speed*
+        turnaroud: [0, 5]
+    }
+};
+
+
 
 redFeatherData = {
     "images": [
@@ -131,6 +159,7 @@ function preload(): void {
     redBirdAtlas = new createjs.SpriteSheet(redBirdData);
     blackDragonAtlas = new createjs.SpriteSheet(blackDragonData);
     redFeatherAtlas = new createjs.SpriteSheet(redFeatherData);
+    coinAtlas = new createjs.SpriteSheet(coinData);
 }
 
 function init():void {
