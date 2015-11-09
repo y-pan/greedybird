@@ -30,7 +30,7 @@ module objects{
 			this._dx = -(Math.floor(Math.random() * 4) + 2); // horizontal drift
             
 			this.y = Math.floor(Math.random() * 430) + 50;
-			this.x = 700;
+            this.x = Math.floor(Math.random() * 200) + 700;
 		}
 		
 		/**

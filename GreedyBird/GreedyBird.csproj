@@ -65,6 +65,7 @@
     <Content Include="Assets\audio\digital_downtown.mp3" />
     <Content Include="Assets\audio\engine.ogg" />
     <Content Include="Assets\audio\dragon_roar.mp3" />
+    <Content Include="Assets\audio\powerUp.mp3" />
     <Content Include="Assets\audio\thunder.ogg" />
     <Content Include="Assets\audio\yay.ogg" />
     <Content Include="Assets\images\backButton.png" />

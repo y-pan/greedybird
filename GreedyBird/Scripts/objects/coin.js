@@ -27,7 +27,7 @@ var objects;
         Coin.prototype._reset = function () {
             this._dx = -(Math.floor(Math.random() * 4) + 2); // horizontal drift
             this.y = Math.floor(Math.random() * 430) + 50;
-            this.x = 700;
+            this.x = Math.floor(Math.random() * 200) + 700;
         };
         /**
          * Check to see if ocean needs to be reset

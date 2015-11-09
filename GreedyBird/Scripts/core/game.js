@@ -61,7 +61,8 @@ var manifest = [
     { id: "bird_hurt", src: "../../Assets/audio/bird_hurt.mp3" },
     { id: "bird_scream", src: "../../Assets/audio/bird_scream.mp3" },
     { id: "digital_downtown", src: "../../Assets/audio/digital_downtown.mp3" },
-    { id: "coins_falldown", src: "../../Assets/audio/coins_falldown.wav" }
+    { id: "coins_falldown", src: "../../Assets/audio/coins_falldown.wav" },
+    { id: "powerUp", src: "../../Assets/audio/powerUp.mp3" }
 ];
 redBirdData = {
     "images": [
