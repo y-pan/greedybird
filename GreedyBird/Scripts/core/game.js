@@ -14,6 +14,7 @@
 /// <reference path="../objects/feather.ts" />
 /// <reference path="../objects/dragon.ts" />
 /// <reference path="../objects/coin.ts" />
+/// <reference path="../objects/heart_plus.ts" />
 /// <reference path="../objects/scene.ts" />
 /// <reference path="../states/over.ts" />
 /// <reference path="../states/game.ts" />
@@ -29,10 +30,12 @@ var redBirdAtlas;
 var blackDragonAtlas;
 var redFeatherAtlas;
 var coinAtlas;
+var heart_plusAtlas;
 var redBirdData;
 var blackDragonData;
 var redFeatherData;
 var coinData;
+var heart_plusData;
 // GAME OBJECTS
 var menu;
 var game;
@@ -50,9 +53,15 @@ var manifest = [
     { id: "blackDragon", src: "../../Assets/images/blackDragon.png" },
     { id: "coin", src: "../../Assets/images/coin.png" },
     { id: "moneyBag", src: "../../Assets/images/moneyBag.png" },
+    { id: "heart_plus", src: "../../Assets/audio/heart_plus.png" },
     { id: "engine", src: "../../Assets/audio/engine.ogg" },
     { id: "thunder", src: "../../Assets/audio/thunder.ogg" },
-    { id: "yay", src: "../../Assets/audio/yay.ogg" }
+    { id: "yay", src: "../../Assets/audio/yay.ogg" },
+    { id: "dragon_roar", src: "../../Assets/audio/dragon_roar.mp3" },
+    { id: "bird_hurt", src: "../../Assets/audio/bird_hurt.mp3" },
+    { id: "bird_scream", src: "../../Assets/audio/bird_scream.mp3" },
+    { id: "digital_downtown", src: "../../Assets/audio/digital_downtown.mp3" },
+    { id: "coins_falldown", src: "../../Assets/audio/coins_falldown.wav" }
 ];
 redBirdData = {
     "images": [
@@ -118,6 +127,20 @@ blackDragonData = {
         } /*speed not work ? */
     }
 };
+heart_plusData = {
+    "images": [
+        "../../Assets/images/heart_plus.png"
+    ],
+    "frames": [
+        [0, 0, 50, 45, 0, 25, 22],
+        [50, 0, 50, 45, 0, 25, 22],
+        [100, 0, 50, 45, 0, 25, 22],
+        [150, 0, 50, 45, 0, 25, 22]
+    ],
+    "animations": {
+        blink: { frames: [0, 3] }
+    }
+};
 function preload() {
     assets = new createjs.LoadQueue();
     assets.installPlugin(createjs.Sound);
@@ -127,6 +150,7 @@ function preload() {
     blackDragonAtlas = new createjs.SpriteSheet(blackDragonData);
     redFeatherAtlas = new createjs.SpriteSheet(redFeatherData);
     coinAtlas = new createjs.SpriteSheet(coinData);
+    heart_plusAtlas = new createjs.SpriteSheet(heart_plusData);
 }
 function init() {
     canvas = document.getElementById("canvas"); // reference to canvas element

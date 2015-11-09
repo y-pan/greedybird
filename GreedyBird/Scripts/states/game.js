@@ -16,8 +16,9 @@ var states;
         }
         // PUBLIC METHODS
         Game.prototype.start = function () {
+            this._backgroundMusic = createjs.Sound.play("digital_downtown");
             // variables
-            this._oldTime = createjs.Ticker.getTicks();
+            this._oldTimeForCoinNum = this._oldTimeForFeather = createjs.Ticker.getTicks();
             // add background
             this._background = new objects.Background();
             this.addChild(this._background);
@@ -33,6 +34,10 @@ var states;
             this.addChild(this._coinLabel);
             this._coin = new objects.Coin();
             this.addChild(this._coin);
+            // heart_plus
+            this._oldTimeForHeart_plus = createjs.Ticker.getTicks();
+            this._heart_plus = new objects.Heart_plus();
+            this.addChild(this._heart_plus);
             // health
             this._health = 100;
             this._heartImg = new createjs.Bitmap(assets.getResult("heart"));
@@ -80,32 +85,73 @@ var states;
             this._bird.visible = true;
             this._bird.y = 150;
             this._playAgainButton.visible = false;
+            this._coinNum = 0;
+            this._coinLabel.text = this._coinNum.toString();
         };
+        //========================================= update ===================================
         Game.prototype.update = function () {
             this._bird.update();
             this._background.update();
-            this._coin.update();
-            this._updateDragons_CheckCollision();
+            this._updateDragons_ApplyCollisionResult();
             this._updateFeathers_RemoveFeathers();
+            this._updateCoin_ApplyCollisionResult();
+            this._updateCoinLabelEffect();
+            this._updateHeartPlus_ApplyCollisionResult();
         }; // end of update
-        Game.prototype._updateDragons_CheckCollision = function () {
+        Game.prototype._updateCoinLabelEffect = function () {
+            this._nowTimeForCoinNum = createjs.Ticker.getTicks();
+            if (this._nowTimeForCoinNum - this._oldTimeForCoinNum > 50) {
+                this._coinLabel.color = "#fff";
+                this._coinLabel.font = "16px Consolas";
+                this._oldTimeForCoinNum = this._nowTimeForCoinNum;
+            }
+        };
+        Game.prototype._updateCoin_ApplyCollisionResult = function () {
+            this._coin.update();
+            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._coin, 60)) {
+                this._coin.x = -50;
+                this._coinNum++;
+                this._coinLabel.text = this._coinNum.toString();
+                this._coinLabel.color = "#ff0";
+                this._coinLabel.font = "25px Consolas";
+                this._nowTimeForCoinNum = createjs.Ticker.getTicks();
+                createjs.Sound.play("coins_falldown");
+            }
+        };
+        Game.prototype._updateHeartPlus_ApplyCollisionResult = function () {
+            this._heart_plus.update();
+            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._heart_plus, 60)) {
+                this._health = this._health > 95 ? 100 : this._health + 5;
+                this._updateBirdHealth();
+                this._heart_plus.x = -50;
+            }
+        };
+        Game.prototype._updateDragons_ApplyCollisionResult = function () {
             // because simply reset the positions of dragons, number of dragons never change
             for (var index = 0; index < 3; index++) {
                 this._dragons[index].update();
-                if (!this._isGameOver) {
-                    this._checkDistanceBetween(this._bird, this._dragons[index]);
+                if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._dragons[index], 60)) {
+                    // health
+                    this._health--;
+                    this._updateBirdHealth();
+                    if (this._health <= 0) {
+                        this._applyGameOver();
+                        createjs.Sound.play("bird_scream");
+                    }
+                    else {
+                        createjs.Sound.play("dragon_roar");
+                        this._showFeatherEffect();
+                        createjs.Sound.play("bird_hurt");
+                    }
                 }
             }
         };
-        Game.prototype._checkDistanceBetween = function (object1, object2) {
-            if (Math.sqrt(Math.pow((object1.x - object2.x), 2) + Math.pow((object1.y - object2.y), 2)) <= 80) {
-                // health
-                this._health--;
-                this._updateBirdHealth();
-                this._showHurtEffect();
-                if (this._health <= 0) {
-                    this._setGameOver();
-                }
+        /**
+         * Return true if collision occured
+         */
+        Game.prototype._checkCollisionBetween = function (object1, object2, distance) {
+            if (Math.sqrt(Math.pow((object1.x - object2.x), 2) + Math.pow((object1.y - object2.y), 2)) <= distance) {
+                return true;
             }
         };
         // check coin collision
@@ -135,19 +181,19 @@ var states;
                 this._healthBar.graphics.beginFill("#f00").drawRect(50, 15, this._health, 4);
             }
         };
-        Game.prototype._setGameOver = function () {
+        Game.prototype._applyGameOver = function () {
             this._bird.visible = false;
             this.addChild(this._gameOverLabel);
             this._isGameOver = true;
             this._playAgainButton.visible = true;
         };
-        Game.prototype._showHurtEffect = function () {
+        Game.prototype._showFeatherEffect = function () {
             // add once feather droping out but not too much
-            this._nowTime = createjs.Ticker.getTicks();
-            if (this._nowTime - this._oldTime >= 30) {
+            this._nowTimeForFeather = createjs.Ticker.getTicks();
+            if (this._nowTimeForFeather - this._oldTimeForFeather >= 30) {
                 this._redFeathers.push(new objects.Feather(this._bird.x, this._bird.y));
                 this.addChild(this._redFeathers[this._redFeathers.length - 1]);
-                this._oldTime = this._nowTime;
+                this._oldTimeForFeather = this._nowTimeForFeather;
             }
         };
         return Game;

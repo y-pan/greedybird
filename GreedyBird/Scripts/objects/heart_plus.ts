@@ -1,13 +1,14 @@
 module objects{
 	
-	export class Dragon extends objects.GameObject{
+	export class Heart_plus extends objects.GameObject{
 		// PRIVATE INSTANCE VAR
-		private _dy:number;  // speed
+		
 		private _dx:number;
 
 		constructor(){
-			super(blackDragonAtlas,"blackDragon", 500, 300);
-			this._dx = -2;
+            super(heart_plusAtlas,"heart_plus", 500, 300);
+            this._dx = -3;
+            
 			this._reset();
 		}
 		
@@ -17,7 +18,6 @@ module objects{
         update() {
             this.tickEnabled = (createjs.Ticker.getTicks() % 8 == 1) ? true : false;
             this.x += this._dx;
-            this.y += this._dy;
             this._checkBounds();
 		}
 		
@@ -29,17 +29,16 @@ module objects{
 		 */
   		private _reset():void {
 			this._dx = -(Math.floor(Math.random() * 4) + 2); // horizontal drift
-            this._dy = Math.floor(Math.random() * 5) - 2; // verticla speed
+            
 			this.y = Math.floor(Math.random() * 430) + 50;
-            this.x = 680;
-            //createjs.Sound.play("dragon_roar");
+			this.x = Math.floor(Math.random() * 800) + 1700;
 		}
 		
 		/**
 		 * Check to see if ocean needs to be reset
 		 */		
 		private _checkBounds():void{
-			if(this.x <= -50 || this.y <= -50 || this.y >= 530){
+			if(this.x <= -50){
 				this._reset();
 			}
 		}

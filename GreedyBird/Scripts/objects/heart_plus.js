@@ -5,43 +5,40 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var objects;
 (function (objects) {
-    var Dragon = (function (_super) {
-        __extends(Dragon, _super);
-        function Dragon() {
-            _super.call(this, blackDragonAtlas, "blackDragon", 500, 300);
-            this._dx = -2;
+    var Heart_plus = (function (_super) {
+        __extends(Heart_plus, _super);
+        function Heart_plus() {
+            _super.call(this, heart_plusAtlas, "heart_plus", 500, 300);
+            this._dx = -3;
             this._reset();
         }
         /**
          * Update Method for Ocean Class
          */
-        Dragon.prototype.update = function () {
+        Heart_plus.prototype.update = function () {
             this.tickEnabled = (createjs.Ticker.getTicks() % 8 == 1) ? true : false;
             this.x += this._dx;
-            this.y += this._dy;
             this._checkBounds();
         };
         // PRIATE METHODS
         /**
          * Resets the Ocean to y=-960
          */
-        Dragon.prototype._reset = function () {
+        Heart_plus.prototype._reset = function () {
             this._dx = -(Math.floor(Math.random() * 4) + 2); // horizontal drift
-            this._dy = Math.floor(Math.random() * 5) - 2; // verticla speed
             this.y = Math.floor(Math.random() * 430) + 50;
-            this.x = 680;
-            //createjs.Sound.play("dragon_roar");
+            this.x = Math.floor(Math.random() * 800) + 1700;
         };
         /**
          * Check to see if ocean needs to be reset
          */
-        Dragon.prototype._checkBounds = function () {
-            if (this.x <= -50 || this.y <= -50 || this.y >= 530) {
+        Heart_plus.prototype._checkBounds = function () {
+            if (this.x <= -50) {
                 this._reset();
             }
         };
-        return Dragon;
+        return Heart_plus;
     })(objects.GameObject);
-    objects.Dragon = Dragon;
+    objects.Heart_plus = Heart_plus;
 })(objects || (objects = {}));
-//# sourceMappingURL=dragon.js.map
+//# sourceMappingURL=heart_plus.js.map

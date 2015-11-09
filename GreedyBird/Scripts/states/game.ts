@@ -7,8 +7,7 @@
         private _dragon: objects.Dragon;
         private _coin: objects.Coin;
         private _dragons: objects.Dragon[] = [];       
-        private _redFeathers:objects.Feather[] = [];
-        
+        private _redFeathers:objects.Feather[] = [];        
 
 
         private _gameOverLabel: objects.Label;
@@ -23,14 +22,26 @@
         private _healthBarBorder: createjs.Shape;
         private _healthLabel: objects.Label;
 
+        private _heart_plus: objects.Heart_plus;
+
         private _coinNum: number;
         private _moneyBag: createjs.Bitmap;
         private _coinLabel: objects.Label;
 
         private _featherReady: boolean;        
-        private _oldTime: number;
-        private _nowTime: number;
+        private _oldTimeForFeather: number;
+        private _nowTimeForFeather: number;
 
+        private _oldTimeForCoinNum: number;
+        private _nowTimeForCoinNum: number;
+
+
+        private _oldTimeForHeart_plus: number;
+        private _nowTimeForHeart_plus: number;
+
+        private _backgroundMusic: createjs.Sound;
+
+             
 
         // CONSTRUCTOR
         constructor() {
@@ -39,8 +50,9 @@
 
         // PUBLIC METHODS
         public start(): void {
+            this._backgroundMusic = createjs.Sound.play("digital_downtown");
             // variables
-            this._oldTime = createjs.Ticker.getTicks();
+            this._oldTimeForCoinNum = this._oldTimeForFeather = createjs.Ticker.getTicks();
             // add background
             
             this._background = new objects.Background();
@@ -60,6 +72,11 @@
 
             this._coin = new objects.Coin();
             this.addChild(this._coin);
+
+            // heart_plus
+            this._oldTimeForHeart_plus = createjs.Ticker.getTicks();
+            this._heart_plus = new objects.Heart_plus();
+            this.addChild(this._heart_plus);
 
             // health
             this._health = 100;
@@ -121,44 +138,94 @@
             this._bird.visible = true;
             this._bird.y = 150;
             this._playAgainButton.visible = false;
+
+            this._coinNum = 0;
+            this._coinLabel.text = this._coinNum.toString();
         }
-
+        //========================================= update ===================================
         public update(): void {
+                        
             this._bird.update();
-            this._background.update();
-            this._coin.update();
+            this._background.update();            
 
-            this._updateDragons_CheckCollision();
+            this._updateDragons_ApplyCollisionResult();
             this._updateFeathers_RemoveFeathers();
-
+            this._updateCoin_ApplyCollisionResult();
+            this._updateCoinLabelEffect();
+            this._updateHeartPlus_ApplyCollisionResult();
 
         }// end of update
 
-        private _updateDragons_CheckCollision(): void{
+        private _updateCoinLabelEffect() {
+            this._nowTimeForCoinNum = createjs.Ticker.getTicks();
+            if (this._nowTimeForCoinNum - this._oldTimeForCoinNum > 50) {
+                this._coinLabel.color = "#fff";
+                this._coinLabel.font = "16px Consolas";
+                this._oldTimeForCoinNum = this._nowTimeForCoinNum;
+            }
+        }
+
+        private _updateCoin_ApplyCollisionResult(): void {
+            this._coin.update();
+            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._coin, 60)) {
+                this._coin.x = -50;
+                this._coinNum++;
+                this._coinLabel.text = this._coinNum.toString();
+
+                this._coinLabel.color = "#ff0";
+                this._coinLabel.font = "25px Consolas";
+                this._nowTimeForCoinNum = createjs.Ticker.getTicks();    
+                createjs.Sound.play("coins_falldown");            
+            }
+        }
+
+        private _updateHeartPlus_ApplyCollisionResult(): void {
+            this._heart_plus.update();
+            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._heart_plus, 60)) {
+                this._health = this._health > 95 ? 100 : this._health + 5;
+                this._updateBirdHealth();
+
+                this._heart_plus.x = -50;
+            }
+        }
+        
+
+        private _updateDragons_ApplyCollisionResult(): void{
             // because simply reset the positions of dragons, number of dragons never change
             for (var index = 0; index < 3; index++) {
                 this._dragons[index].update();
-                if (!this._isGameOver) {
-                    this._checkDistanceBetween(this._bird, this._dragons[index]);
+                if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._dragons[index], 60)) {
+         
+                    // health
+                    this._health--;
+                    this._updateBirdHealth();
+
+                    if (this._health <= 0) {
+                        this._applyGameOver();
+                       
+                        createjs.Sound.play("bird_scream");
+                    } else {      
+                        createjs.Sound.play("dragon_roar");                  
+                        this._showFeatherEffect();                        
+                        createjs.Sound.play("bird_hurt");
+                    }
                 }
             }
         }
 
-        private _checkDistanceBetween(object1: objects.Bird, object2: createjs.Sprite): void {
 
-            if (Math.sqrt(Math.pow((object1.x - object2.x), 2) + Math.pow((object1.y - object2.y), 2)) <= 80) {
+        
+        /**
+         * Return true if collision occured
+         */
+        private _checkCollisionBetween(object1: objects.Bird, object2: createjs.Sprite, distance:number): boolean {
 
-                // health
-                this._health--;
-                this._updateBirdHealth();
-                this._showHurtEffect();
+            if (Math.sqrt(Math.pow((object1.x - object2.x), 2) + Math.pow((object1.y - object2.y), 2)) <= distance) {
 
-                if (this._health <= 0) {
-                    this._setGameOver();
-                }
-
+                return true;
             }
         }
+
 
         // check coin collision
 
@@ -190,22 +257,23 @@
             }
         }
 
-        private _setGameOver(): void {
+        private _applyGameOver(): void {
 
             this._bird.visible = false;
             this.addChild(this._gameOverLabel);
             this._isGameOver = true;
 
             this._playAgainButton.visible = true;
+            
         }
 
-        private _showHurtEffect(): void {
+        private _showFeatherEffect(): void {
             // add once feather droping out but not too much
-            this._nowTime = createjs.Ticker.getTicks();
-            if (this._nowTime - this._oldTime >= 30) {
+            this._nowTimeForFeather = createjs.Ticker.getTicks();
+            if (this._nowTimeForFeather - this._oldTimeForFeather >= 30) {
                 this._redFeathers.push(new objects.Feather(this._bird.x, this._bird.y));
                 this.addChild(this._redFeathers[this._redFeathers.length - 1]);
-                this._oldTime = this._nowTime;
+                this._oldTimeForFeather = this._nowTimeForFeather;
             }
         }
 

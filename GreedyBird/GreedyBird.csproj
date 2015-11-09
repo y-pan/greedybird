@@ -59,7 +59,12 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\audio\bird_scream.mp3" />
+    <Content Include="Assets\audio\bird_hurt.mp3" />
+    <Content Include="Assets\audio\coins_falldown.wav" />
+    <Content Include="Assets\audio\digital_downtown.mp3" />
     <Content Include="Assets\audio\engine.ogg" />
+    <Content Include="Assets\audio\dragon_roar.mp3" />
     <Content Include="Assets\audio\thunder.ogg" />
     <Content Include="Assets\audio\yay.ogg" />
     <Content Include="Assets\images\backButton.png" />
@@ -67,6 +72,7 @@
     <Content Include="Assets\images\blackDragon.png" />
     <Content Include="Assets\images\coin.png" />
     <Content Include="Assets\images\heart.png" />
+    <Content Include="Assets\images\heart_plus.png" />
     <Content Include="Assets\images\moneyBag.png" />
     <Content Include="Assets\images\nextButton.png" />
     <Content Include="Assets\images\redBird.png" />
@@ -104,6 +110,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\config\config.ts" />
     <TypeScriptCompile Include="Scripts\core\game.ts" />
+    <TypeScriptCompile Include="Scripts\objects\heart_plus.ts" />
     <TypeScriptCompile Include="Scripts\objects\coin.ts" />
     <TypeScriptCompile Include="Scripts\objects\feather.ts" />
     <TypeScriptCompile Include="Scripts\objects\button.ts" />
