@@ -12,32 +12,18 @@ var states;
         function Game() {
             _super.call(this);
             this._dragons = [];
+            // Variables for feather - effect for bird getting hurt
             this._redFeathers = [];
         }
         // PUBLIC METHODS
         Game.prototype.start = function () {
             this._backgroundMusic = createjs.Sound.play("digital_downtown");
-            // variables
-            this._oldTimeForCoinNum = this._oldTimeForFeather = createjs.Ticker.getTicks();
             // add background
             this._background = new objects.Background();
             this.addChild(this._background);
-            // add coin
-            this._coinNum = 0;
-            this._moneyBag = new createjs.Bitmap(assets.getResult("moneyBag"));
-            this._moneyBag.x = 180;
-            this._moneyBag.y = 10;
-            this.addChild(this._moneyBag);
-            this._coinLabel = new objects.Label(this._coinNum.toString(), "16px Consolas", "#fff", 220, 20);
-            this._coinLabel.regX = 0;
-            this._coinLabel.regY = 0;
-            this.addChild(this._coinLabel);
-            this._coin = new objects.Coin();
-            this.addChild(this._coin);
-            // heart_plus
-            this._oldTimeForHeart_plus = createjs.Ticker.getTicks();
-            this._heart_plus = new objects.Heart_plus();
-            this.addChild(this._heart_plus);
+            // add bird/player
+            this._bird = new objects.Bird();
+            this.addChild(this._bird);
             // health
             this._health = 100;
             this._heartImg = new createjs.Bitmap(assets.getResult("heart"));
@@ -54,15 +40,29 @@ var states;
             this._healthLabel.regX = 0;
             this._healthLabel.regY = 0;
             this.addChild(this._healthLabel);
-            // add bird
-            this._bird = new objects.Bird();
-            this.addChild(this._bird);
-            // add 3 dragons
+            // heart_plus
+            this._oldTimeForHeart_plus = createjs.Ticker.getTicks();
+            this._heart_plus = new objects.Heart_plus();
+            this.addChild(this._heart_plus);
+            // add 3 dragons/enemies
             for (var index = 0; index < 3; index++) {
                 this._dragons[index] = new objects.Dragon();
                 this.addChild(this._dragons[index]);
             }
-            // When Game Over +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            // add coin
+            this._oldTimeForCoinNum = this._oldTimeForFeather = createjs.Ticker.getTicks();
+            this._coinNum = 0;
+            this._moneyBag = new createjs.Bitmap(assets.getResult("moneyBag"));
+            this._moneyBag.x = 180;
+            this._moneyBag.y = 10;
+            this.addChild(this._moneyBag);
+            this._coinLabel = new objects.Label(this._coinNum.toString(), "16px Consolas", "#fff", 220, 20);
+            this._coinLabel.regX = 0;
+            this._coinLabel.regY = 0;
+            this.addChild(this._coinLabel);
+            this._coin = new objects.Coin();
+            this.addChild(this._coin);
+            // Variables for Game Over
             this._gameOverLabel = new objects.Label("Game Over\nYour score is: ", "30px Consolas", "#0ff", 450, 100);
             this._gameOverLabel.textAlign = "center";
             this.addChild(this._gameOverLabel);
@@ -74,12 +74,15 @@ var states;
             this.addChild(this._playAgainButton);
             stage.addChild(this);
         }; // end of start()
-        //
+        // PRIVATE METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // Event handler for "play again" button
         Game.prototype._clickPlayAgainButton = function (event) {
             this._resetGame();
         };
+        /**
+         * Reset game when "play again" button clicked
+         */
         Game.prototype._resetGame = function () {
-            // reset
             this._health = 100;
             this._isGameOver = false;
             this._gameOverLabel.visible = false;
@@ -93,19 +96,9 @@ var states;
             createjs.Sound.stop();
             this._backgroundMusic = createjs.Sound.play("digital_downtown");
         };
-        //========================================= update ===================================
-        Game.prototype.update = function () {
-            this._bird.update();
-            this._background.update();
-            this._updateDragons_ApplyCollisionResult();
-            this._updateFeathers_RemoveFeathers();
-            this._updateCoin_ApplyCollisionResult();
-            this._updateCoinLabelEffect();
-            this._updateHeartPlus_ApplyCollisionResult();
-            if (this._backgroundMusic.off) {
-                this._backgroundMusic.on;
-            }
-        }; // end of update
+        /**
+         * Update coinLabel effect - text color and size
+         */
         Game.prototype._updateCoinLabelEffect = function () {
             this._nowTimeForCoinNum = createjs.Ticker.getTicks();
             if (this._nowTimeForCoinNum - this._oldTimeForCoinNum > 50) {
@@ -114,6 +107,9 @@ var states;
                 this._oldTimeForCoinNum = this._nowTimeForCoinNum;
             }
         };
+        /**
+         * Update coin, check collision with bird, and apply collision result
+         */
         Game.prototype._updateCoin_ApplyCollisionResult = function () {
             this._coin.update();
             if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._coin, 60)) {
@@ -126,6 +122,9 @@ var states;
                 createjs.Sound.play("coins_falldown");
             }
         };
+        /**
+         * Update heart, check collision with bird, and apply collision result
+         */
         Game.prototype._updateHeartPlus_ApplyCollisionResult = function () {
             this._heart_plus.update();
             if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._heart_plus, 60)) {
@@ -135,6 +134,9 @@ var states;
                 this._heart_plus.x = -50;
             }
         };
+        /**
+         * Update dragons, check collision with bird, and apply collision result
+         */
         Game.prototype._updateDragons_ApplyCollisionResult = function () {
             // because simply reset the positions of dragons, number of dragons never change
             for (var index = 0; index < 3; index++) {
@@ -154,6 +156,9 @@ var states;
                 }
             }
         };
+        /**
+         * Update feathers and remove feathers that are currently ouside of screen
+         */
         Game.prototype._updateFeathers_RemoveFeathers = function () {
             if (this._redFeathers.length > 0) {
                 //console.log("Feathers: " + this._redFeathers.length);
@@ -167,6 +172,9 @@ var states;
                 }
             }
         };
+        /**
+         * Update bird's health relavant variables including labels and bar
+         */
         Game.prototype._updateBirdHealth = function () {
             this._healthLabel.text = this._health > 0 ? this._health.toString() : "0";
             this._healthBar.graphics.clear();
@@ -180,6 +188,9 @@ var states;
                 this._healthBar.graphics.beginFill("#f00").drawRect(50, 15, this._health, 4);
             }
         };
+        /**
+         * Apply variables when game is over
+         */
         Game.prototype._applyGameOver = function () {
             this._bird.visible = false;
             this._gameOverLabel.visible = true;
@@ -187,6 +198,9 @@ var states;
             this._isGameOver = true;
             this._playAgainButton.visible = true;
         };
+        /**
+         * Show feather effect when bird gets hurt by dragon
+         */
         Game.prototype._showFeatherEffect = function () {
             // add once feather droping out but not too much
             this._nowTimeForFeather = createjs.Ticker.getTicks();
@@ -204,6 +218,20 @@ var states;
                 return true;
             }
         };
+        //  PUBLIC METHOD +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        Game.prototype.update = function () {
+            this._bird.update();
+            this._background.update();
+            this._updateDragons_ApplyCollisionResult();
+            this._updateFeathers_RemoveFeathers();
+            this._updateCoin_ApplyCollisionResult();
+            this._updateCoinLabelEffect();
+            this._updateHeartPlus_ApplyCollisionResult();
+            // reset music
+            if (this._backgroundMusic.off) {
+                this._backgroundMusic.on;
+            }
+        }; // end of update
         return Game;
     })(objects.Scene);
     states.Game = Game;

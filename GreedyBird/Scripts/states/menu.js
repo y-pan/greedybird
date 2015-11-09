@@ -27,7 +27,7 @@ var states;
             this._descriptonLabel = new objects.Label("Description:\n  This canvas game developed with TypeScript, createjs and stats.js.\n  To play game, click start button below to load the game. \n  Then move mouse up/down to move bird up/down.\n  Avoid dragons, catch coin and heart.", "14px Consolas", "#fff", 20, 170);
             this._descriptonLabel.lineHeight = 20;
             this._descriptonLabel.regX = 0;
-            this._functionsLabel = new objects.Label("Functions:\n  _updateCoinLabelEffect(), _updateCoin_ApplyCollisionResult(),\n  _updateHeartPlus_ApplyCollisionResult(), _updateFeathers_RemoveFeathers(),\n  _updateDragons_ApplyCollisionResult(), _updateBirdHealth(), _applyGameOver(), \n  _showFeatherEffect(), _checkCollisionBetween(), _resetGame(),", "14px Consolas", "#fff", 20, 270);
+            this._functionsLabel = new objects.Label("Functions:\n  _updateCoinLabelEffect(), _updateCoin_ApplyCollisionResult(),\n  _updateHeartPlus_ApplyCollisionResult(), _updateFeathers_RemoveFeathers(),\n  _updateDragons_ApplyCollisionResult(), _updateBirdHealth(), _applyGameOver(), \n  _showFeatherEffect(), _checkCollisionBetween(), _resetGame()", "14px Consolas", "#fff", 20, 270);
             this._functionsLabel.lineHeight = 20;
             this._functionsLabel.regX = 0;
             this._classesLabel = new objects.Label("Classes:\n  Objects.background, .bird, .button, .coin, .dragon, .scene, \n  .feather, .gameobject, .heart_plus, .label", "14px Consolas", "#fff", 20, 365);

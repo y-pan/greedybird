@@ -38,7 +38,7 @@
             this._descriptonLabel.lineHeight = 20;
             this._descriptonLabel.regX = 0;
 
-            this._functionsLabel = new objects.Label("Functions:\n  _updateCoinLabelEffect(), _updateCoin_ApplyCollisionResult(),\n  _updateHeartPlus_ApplyCollisionResult(), _updateFeathers_RemoveFeathers(),\n  _updateDragons_ApplyCollisionResult(), _updateBirdHealth(), _applyGameOver(), \n  _showFeatherEffect(), _checkCollisionBetween(), _resetGame(),", "14px Consolas", "#fff", 20, 270);
+            this._functionsLabel = new objects.Label("Functions:\n  _updateCoinLabelEffect(), _updateCoin_ApplyCollisionResult(),\n  _updateHeartPlus_ApplyCollisionResult(), _updateFeathers_RemoveFeathers(),\n  _updateDragons_ApplyCollisionResult(), _updateBirdHealth(), _applyGameOver(), \n  _showFeatherEffect(), _checkCollisionBetween(), _resetGame()", "14px Consolas", "#fff", 20, 270);
             this._functionsLabel.lineHeight = 20;
             this._functionsLabel.regX = 0;
 
