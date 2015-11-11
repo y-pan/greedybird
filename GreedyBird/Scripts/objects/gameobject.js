@@ -8,10 +8,11 @@ var objects;
     var GameObject = (function (_super) {
         __extends(GameObject, _super);
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++
-        function GameObject(atlas, imageString, x, y) {
+        function GameObject(atlas, imageString, x, y, radius) {
             _super.call(this, atlas, imageString);
             this._width = this.getBounds().width;
             this._height = this.getBounds().height;
+            this.radius = radius ? radius : this._height * .5;
             this.x = x;
             this.y = y;
             this.regX = this._width * .5;

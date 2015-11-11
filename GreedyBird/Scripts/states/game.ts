@@ -6,6 +6,8 @@
         private _bird:objects.Bird;
         private _dragon: objects.Dragon;
         private _dragons: objects.Dragon[] = [];       
+        private _redDragonNum: number = 3;
+        private _blackDragonNum: number = 1;
 
         // Variables for health
         private _health: number;
@@ -37,6 +39,7 @@
         private _isGameOver: boolean;
         private _gameOverLabel: objects.Label;
         private _playAgainButton: objects.Button;
+
 
         // CONSTRUCTOR
         constructor() {
@@ -83,9 +86,14 @@
             this._heart_plus = new objects.Heart_plus();
             this.addChild(this._heart_plus);
 
-            // add 3 dragons/enemies
-            for (var index = 0; index < 3; index++) {
-                this._dragons[index] = new objects.Dragon();
+            // add dragons/enemies
+            for (var index = 0; index < this._redDragonNum + this._blackDragonNum; index++) {
+                if (index < this._redDragonNum) {
+                    this._dragons[index] = new objects.Dragon(redDragonAtlas, "redDragon", 40);
+                } else {
+                    this._dragons[index] = new objects.Dragon(blackDragonAtlas, "blackDragon", 100);
+                }
+                
                 this.addChild(this._dragons[index]);
             }
 
@@ -167,7 +175,7 @@
          */
         private _updateCoin_ApplyCollisionResult(): void {
             this._coin.update();
-            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._coin, 60)) {
+            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._coin, this._bird.radius + this._coin.radius)) {
                 this._coin.x = -50;
                 this._coinNum++;
                 this._coinLabel.text = this._coinNum.toString();
@@ -184,7 +192,7 @@
          */
         private _updateHeartPlus_ApplyCollisionResult(): void {
             this._heart_plus.update();
-            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._heart_plus, 60)) {
+            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._heart_plus, this._bird.radius + this._heart_plus.radius)) {
                 this._health = this._health > 95 ? 100 : this._health + 5;
                 createjs.Sound.play("powerUp");
                 this._updateBirdHealth();
@@ -197,9 +205,9 @@
          */
         private _updateDragons_ApplyCollisionResult(): void{
             // because simply reset the positions of dragons, number of dragons never change
-            for (var index = 0; index < 3; index++) {
+            for (var index = 0; index < this._redDragonNum + this._blackDragonNum; index++) {
                 this._dragons[index].update();
-                if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._dragons[index], 60)) {
+                if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._dragons[index], this._bird.radius + this._dragons[index].radius)) {
 
                     this._health--;
                     this._updateBirdHealth();

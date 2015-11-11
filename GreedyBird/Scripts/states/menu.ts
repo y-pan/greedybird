@@ -72,8 +72,5 @@
             //createjs.Sound.play("yay"); // activate static class play 
             changeState(config.PLAY_STATE);
         }
-
     }
-
-
 }

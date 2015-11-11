@@ -6,7 +6,7 @@ module objects{
 		private _dx:number;
 
 		constructor(){
-            super(coinAtlas,"coin", 500, 300);
+            super(coinAtlas,"spin", 500, 300, 25);
 			this._dx = -2;
 			this._reset();
 		}
@@ -15,7 +15,7 @@ module objects{
 		 * Update Method for Ocean Class
 		 */
         update() {
-            this.tickEnabled = (createjs.Ticker.getTicks() % 4 == 1) ? true : false;
+           
             this.x += this._dx;
             this._checkBounds();
 		}
@@ -29,15 +29,15 @@ module objects{
   		private _reset():void {
 			this._dx = -(Math.floor(Math.random() * 4) + 2); // horizontal drift
             
-			this.y = Math.floor(Math.random() * 430) + 50;
-            this.x = Math.floor(Math.random() * 200) + 700;
+            this.y = Math.floor(Math.random() * canvasHeight) + this.radius * 2;
+            this.x = Math.floor(Math.random() * canvasWidth) + 700;
 		}
 		
 		/**
 		 * Check to see if ocean needs to be reset
 		 */		
 		private _checkBounds():void{
-			if(this.x <= -50){
+            if (this.x <= -this.radius * 2){
 				this._reset();
 			}
 		}

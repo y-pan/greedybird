@@ -8,7 +8,7 @@ var objects;
     var Feather = (function (_super) {
         __extends(Feather, _super);
         function Feather(x, y) {
-            _super.call(this, redFeatherAtlas, "redFeather", x, y);
+            _super.call(this, redFeatherAtlas, "blink", x, y, null);
             console.log("Feather");
         }
         /**
@@ -16,7 +16,6 @@ var objects;
          */
         Feather.prototype.update = function () {
             this.y += 8;
-            this.tickEnabled = (createjs.Ticker.getTicks() % 8 == 1) ? true : false;
         };
         return Feather;
     })(objects.GameObject);

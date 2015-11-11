@@ -7,16 +7,15 @@ var objects;
 (function (objects) {
     var Dragon = (function (_super) {
         __extends(Dragon, _super);
-        function Dragon() {
-            _super.call(this, blackDragonAtlas, "blackDragon", 500, 300);
-            this._dx = -2;
+        function Dragon(atlas, imageString, colliderRadius) {
+            _super.call(this, atlas, "fly", 500, 300, colliderRadius);
+            this._dx = -4;
             this._reset();
         }
         /**
          * Update Method for Ocean Class
          */
         Dragon.prototype.update = function () {
-            this.tickEnabled = (createjs.Ticker.getTicks() % 8 == 1) ? true : false;
             this.x += this._dx;
             this.y += this._dy;
             this._checkBounds();
@@ -28,15 +27,14 @@ var objects;
         Dragon.prototype._reset = function () {
             this._dx = -(Math.floor(Math.random() * 4) + 2); // horizontal drift
             this._dy = Math.floor(Math.random() * 5) - 2; // verticla speed
-            this.y = Math.floor(Math.random() * 430) + 50;
-            this.x = 680;
-            //createjs.Sound.play("dragon_roar");
+            this.y = Math.floor(Math.random() * canvasHeight) + this.radius * 2;
+            this.x = canvasWidth + this.radius * 2;
         };
         /**
          * Check to see if ocean needs to be reset
          */
         Dragon.prototype._checkBounds = function () {
-            if (this.x <= -50 || this.y <= -50 || this.y >= 530) {
+            if (this.x <= 0 - this.radius * 2 || this.y <= -this.radius * 2 || this.y >= canvasHeight + this.radius * 2) {
                 this._reset();
             }
         };

@@ -12,6 +12,8 @@ var states;
         function Game() {
             _super.call(this);
             this._dragons = [];
+            this._redDragonNum = 3;
+            this._blackDragonNum = 1;
             // Variables for feather - effect for bird getting hurt
             this._redFeathers = [];
         }
@@ -44,9 +46,14 @@ var states;
             this._oldTimeForHeart_plus = createjs.Ticker.getTicks();
             this._heart_plus = new objects.Heart_plus();
             this.addChild(this._heart_plus);
-            // add 3 dragons/enemies
-            for (var index = 0; index < 3; index++) {
-                this._dragons[index] = new objects.Dragon();
+            // add dragons/enemies
+            for (var index = 0; index < this._redDragonNum + this._blackDragonNum; index++) {
+                if (index < this._redDragonNum) {
+                    this._dragons[index] = new objects.Dragon(redDragonAtlas, "redDragon", 40);
+                }
+                else {
+                    this._dragons[index] = new objects.Dragon(blackDragonAtlas, "blackDragon", 100);
+                }
                 this.addChild(this._dragons[index]);
             }
             // add coin
@@ -112,7 +119,7 @@ var states;
          */
         Game.prototype._updateCoin_ApplyCollisionResult = function () {
             this._coin.update();
-            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._coin, 60)) {
+            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._coin, this._bird.radius + this._coin.radius)) {
                 this._coin.x = -50;
                 this._coinNum++;
                 this._coinLabel.text = this._coinNum.toString();
@@ -127,7 +134,7 @@ var states;
          */
         Game.prototype._updateHeartPlus_ApplyCollisionResult = function () {
             this._heart_plus.update();
-            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._heart_plus, 60)) {
+            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._heart_plus, this._bird.radius + this._heart_plus.radius)) {
                 this._health = this._health > 95 ? 100 : this._health + 5;
                 createjs.Sound.play("powerUp");
                 this._updateBirdHealth();
@@ -139,9 +146,9 @@ var states;
          */
         Game.prototype._updateDragons_ApplyCollisionResult = function () {
             // because simply reset the positions of dragons, number of dragons never change
-            for (var index = 0; index < 3; index++) {
+            for (var index = 0; index < this._redDragonNum + this._blackDragonNum; index++) {
                 this._dragons[index].update();
-                if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._dragons[index], 60)) {
+                if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._dragons[index], this._bird.radius + this._dragons[index].radius)) {
                     this._health--;
                     this._updateBirdHealth();
                     if (this._health <= 0) {

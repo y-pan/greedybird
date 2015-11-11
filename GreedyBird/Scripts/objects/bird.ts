@@ -2,10 +2,11 @@ module objects{
 	
 	export class Bird extends objects.GameObject {
 
+        private _oldY: number;
+
 		constructor(){
-            super(redBirdAtlas,"redBird",100,100);			
-			this.x = 150;
-            
+            super(redBirdAtlas, "fly", 150, 100, 30);	
+            this._oldY = stage.mouseY;		
 		}	
 		
 		/**
@@ -15,12 +16,20 @@ module objects{
         	
         public update():void {			
             
-            this.y = (stage.mouseY < this._height) ? this._height : stage.mouseY;	
+            this.y = (stage.mouseY < this._height) ? this._height : stage.mouseY;	          
 
-            this.tickEnabled = (createjs.Ticker.getTicks() % 6 == 0) ? true : false;
-            
-        }
+            //this.gotoAndPlay("fly");
+          
 
-        
+            //if (this.y > this._oldY + 10) {
+            //    this.gotoAndPlay("down");                
+            //} else if (this.y < this._oldY - 10) {
+            //    this.gotoAndPlay("up");
+            //} else {
+            //    this.gotoAndPlay("fly");
+            //}
+
+            this._oldY = this.y;
+        }        
 	}
 }

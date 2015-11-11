@@ -5,13 +5,15 @@ module objects{
 		// PROCTECTED instance Var++++++++++++++++++++++++++++
 		protected _width:number;
 		protected _height:number;
-		
+        public radius: number;
 		// CONSTRUCTOR ++++++++++++++++++++++++++++++++++++
-		constructor(atlas:any, imageString:string, x:number, y:number){
+		constructor(atlas:any, imageString:string, x:number, y:number, radius:number){
 			super(atlas, imageString);
 			
 			this._width = this.getBounds().width;
             this._height = this.getBounds().height;
+
+            this.radius = radius ? radius : this._height * .5;
 
             this.x = x;
             this.y = y;

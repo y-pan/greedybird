@@ -8,15 +8,23 @@ var objects;
     var Bird = (function (_super) {
         __extends(Bird, _super);
         function Bird() {
-            _super.call(this, redBirdAtlas, "redBird", 100, 100);
-            this.x = 150;
+            _super.call(this, redBirdAtlas, "fly", 150, 100, 30);
+            this._oldY = stage.mouseY;
         }
         /**
          * Update Method for Plane Class
          */
         Bird.prototype.update = function () {
             this.y = (stage.mouseY < this._height) ? this._height : stage.mouseY;
-            this.tickEnabled = (createjs.Ticker.getTicks() % 6 == 0) ? true : false;
+            //this.gotoAndPlay("fly");
+            //if (this.y > this._oldY + 10) {
+            //    this.gotoAndPlay("down");                
+            //} else if (this.y < this._oldY - 10) {
+            //    this.gotoAndPlay("up");
+            //} else {
+            //    this.gotoAndPlay("fly");
+            //}
+            this._oldY = this.y;
         };
         return Bird;
     })(objects.GameObject);

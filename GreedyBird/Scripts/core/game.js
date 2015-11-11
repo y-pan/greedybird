@@ -26,13 +26,17 @@ var stage;
 var stats;
 var state;
 var currentState; // alias for our current state
+var canvasWidth = 640;
+var canvasHeight = 480;
 var redBirdAtlas;
 var blackDragonAtlas;
+var redDragonAtlas;
 var redFeatherAtlas;
 var coinAtlas;
 var heart_plusAtlas;
 var redBirdData;
 var blackDragonData;
+var redDragonData;
 var redFeatherData;
 var coinData;
 var heart_plusData;
@@ -51,6 +55,7 @@ var manifest = [
     { id: "redBird", src: "../../Assets/images/redBird.png" },
     { id: "redFeather", src: "../../Assets/images/redFeather.png" },
     { id: "blackDragon", src: "../../Assets/images/blackDragon.png" },
+    { id: "redDragon", src: "../../Assets/images/redDragon.png" },
     { id: "coin", src: "../../Assets/images/coin.png" },
     { id: "moneyBag", src: "../../Assets/images/moneyBag.png" },
     { id: "heart_plus", src: "../../Assets/audio/heart_plus.png" },
@@ -64,6 +69,27 @@ var manifest = [
     { id: "coins_falldown", src: "../../Assets/audio/coins_falldown.wav" },
     { id: "powerUp", src: "../../Assets/audio/powerUp.mp3" }
 ];
+/*
+// 1 row
+redBirdData = {
+    "images": [
+        "../../Assets/images/redBird.png"
+    ],
+    "frames": [
+        [0, 0, 80, 64, 0, 40, 32],
+        [80, 0, 80, 64, 0, 40, 32],
+        [160, 0, 80, 64, 0, 40, 32],
+        [240, 0, 80, 64, 0, 40, 32]
+    ],
+    "animations": {
+        fly: {
+            frames:[0, 3],
+            speed: 0.0005
+        }
+    }
+};
+ */
+// 3 rows
 redBirdData = {
     "images": [
         "../../Assets/images/redBird.png"
@@ -72,13 +98,20 @@ redBirdData = {
         [0, 0, 100, 80, 0, 50, 40],
         [100, 0, 100, 80, 0, 50, 40],
         [200, 0, 100, 80, 0, 50, 40],
-        [300, 0, 100, 80, 0, 50, 40]
+        [300, 0, 100, 80, 0, 50, 40],
+        [0, 80, 100, 80, 0, 50, 40],
+        [100, 80, 100, 80, 0, 50, 40],
+        [200, 80, 100, 80, 0, 50, 40],
+        [300, 80, 100, 80, 0, 50, 40],
+        [0, 160, 100, 80, 0, 50, 40],
+        [100, 160, 100, 80, 0, 50, 40],
+        [200, 160, 100, 80, 0, 50, 40],
+        [300, 160, 100, 80, 0, 50, 40]
     ],
     "animations": {
-        fly: {
-            frames: [0, 3],
-            speed: 0.0005
-        }
+        "fly": [0, 3, true, .3],
+        "up": [4, 7, true, .3],
+        "down": [8, 11, true, .4]
     }
 };
 //     x, y, width, height, imageIndex*, regX*, regY*
@@ -95,8 +128,7 @@ coinData = {
         [250, 0, 50, 50, 0, 25, 25],
     ],
     "animations": {
-        // start, end, next*, speed*
-        turnaroud: [0, 5]
+        "spin": [0, 5, true, .3]
     }
 };
 redFeatherData = {
@@ -108,7 +140,7 @@ redFeatherData = {
         [100, 0, 100, 80, 0, 50, 40]
     ],
     "animations": {
-        dropingout: { frames: [0, 1] }
+        dropingout: { frames: [0, 1, true, 0.3] }
     }
 };
 blackDragonData = {
@@ -116,16 +148,27 @@ blackDragonData = {
         "../../Assets/images/blackDragon.png"
     ],
     "frames": [
-        [0, 0, 100, 100, 0, 50, 50],
-        [100, 0, 100, 100, 0, 50, 50],
-        [200, 0, 100, 100, 0, 50, 50],
-        [300, 0, 100, 100, 0, 50, 50]
+        [0, 0, 200, 200, 0, 100, 100],
+        [200, 0, 200, 200, 0, 100, 100],
+        [400, 0, 200, 200, 0, 100, 100],
+        [600, 0, 200, 200, 0, 100, 100]
     ],
     "animations": {
-        fly: {
-            frames: [0, 3],
-            speed: 0.0005
-        } /*speed not work ? */
+        fly: [0, 3, true, 0.1]
+    }
+};
+redDragonData = {
+    "images": [
+        "../../Assets/images/redDragon.png"
+    ],
+    "frames": [
+        [0, 0, 120, 120, 0, 60, 60],
+        [120, 0, 120, 120, 0, 60, 60],
+        [240, 0, 120, 120, 0, 60, 60],
+        [360, 0, 120, 120, 0, 60, 60]
+    ],
+    "animations": {
+        fly: [0, 3, true, 0.2]
     }
 };
 heart_plusData = {
@@ -139,7 +182,7 @@ heart_plusData = {
         [150, 0, 50, 45, 0, 25, 22]
     ],
     "animations": {
-        blink: { frames: [0, 3] }
+        "blink": [0, 3, true, 0.2]
     }
 };
 function preload() {
@@ -149,6 +192,7 @@ function preload() {
     assets.loadManifest(manifest);
     redBirdAtlas = new createjs.SpriteSheet(redBirdData);
     blackDragonAtlas = new createjs.SpriteSheet(blackDragonData);
+    redDragonAtlas = new createjs.SpriteSheet(redDragonData);
     redFeatherAtlas = new createjs.SpriteSheet(redFeatherData);
     coinAtlas = new createjs.SpriteSheet(coinData);
     heart_plusAtlas = new createjs.SpriteSheet(heart_plusData);
