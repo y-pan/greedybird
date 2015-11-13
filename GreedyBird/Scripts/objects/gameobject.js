@@ -17,7 +17,6 @@ var objects;
             this.y = y;
             this.regX = this._width * .5;
             this.regY = this._height * .5;
-            //this.stage.tickEnabled = false;
         }
         return GameObject;
     })(createjs.Sprite);

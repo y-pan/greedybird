@@ -28,7 +28,7 @@ module objects{
   		private _reset():void {
 			this._dx = -(Math.floor(Math.random() * 4) + 2); // horizontal drift
             
-            this.y = Math.floor(Math.random() * canvasHeight) + this.radius * 2;
+            this.y = Math.floor(Math.random() * (canvasHeight - this.radius * 2)) + this.radius * 2;
 			this.x = Math.floor(Math.random() * canvasWidth) + 1700;
 		}
 		

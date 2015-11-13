@@ -57,7 +57,7 @@
             this.addChild(this._background);
 
             // add bird/player
-            this._bird = new objects.Bird();
+            this._bird = new objects.Bird("fly",150);
             this.addChild(this._bird);           
                     
             // health
@@ -175,7 +175,7 @@
          */
         private _updateCoin_ApplyCollisionResult(): void {
             this._coin.update();
-            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._coin, this._bird.radius + this._coin.radius)) {
+            if (!this._isGameOver && this._checkCollisionByCenter(this._bird, this._coin, this._bird.radius + this._coin.radius)) {
                 this._coin.x = -50;
                 this._coinNum++;
                 this._coinLabel.text = this._coinNum.toString();
@@ -192,7 +192,7 @@
          */
         private _updateHeartPlus_ApplyCollisionResult(): void {
             this._heart_plus.update();
-            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._heart_plus, this._bird.radius + this._heart_plus.radius)) {
+            if (!this._isGameOver && this._checkCollisionByCenter(this._bird, this._heart_plus, this._bird.radius + this._heart_plus.radius)) {
                 this._health = this._health > 95 ? 100 : this._health + 5;
                 createjs.Sound.play("powerUp");
                 this._updateBirdHealth();
@@ -207,7 +207,7 @@
             // because simply reset the positions of dragons, number of dragons never change
             for (var index = 0; index < this._redDragonNum + this._blackDragonNum; index++) {
                 this._dragons[index].update();
-                if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._dragons[index], this._bird.radius + this._dragons[index].radius)) {
+                if (!this._isGameOver && this._checkCollisionByCenter(this._bird, this._dragons[index], this._bird.radius + this._dragons[index].radius)) {
 
                     this._health--;
                     this._updateBirdHealth();
@@ -229,7 +229,6 @@
          */
         private _updateFeathers_RemoveFeathers(): void {
             if (this._redFeathers.length > 0) {
-                //console.log("Feathers: " + this._redFeathers.length);
                 for (var i = 0, len = this._redFeathers.length; i < len; i++) {
                     this._redFeathers[i].update();
                     if (this._redFeathers[i].y > 680) {
@@ -286,18 +285,25 @@
         /**
          * Return true if collision occured
          */
-        private _checkCollisionBetween(object1: objects.Bird, object2: createjs.Sprite, distance: number): boolean {
+        private _checkCollisionByCenter(object1: objects.Bird, object2: createjs.Sprite, distance: number): boolean {
 
             if (Math.sqrt(Math.pow((object1.x - object2.x), 2) + Math.pow((object1.y - object2.y), 2)) <= distance) {
 
                 return true;
             }
         }
-
+        
+        
         //  PUBLIC METHOD +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         public update(): void {
-
+           /*
+            if (this._bird.y > this._bird._oldY) { // down
+            } else if (this._bird.y < this._bird._oldY) {// up
+            } else {
+            }
+            */
             this._bird.update();
+
             this._background.update();
 
             this._updateDragons_ApplyCollisionResult();
@@ -307,9 +313,11 @@
             this._updateHeartPlus_ApplyCollisionResult();
 
             // reset music
+          /*
             if (this._backgroundMusic.off) {
                 this._backgroundMusic.on;
             }
+            */
 
         }// end of update
 

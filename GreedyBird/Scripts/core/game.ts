@@ -126,8 +126,8 @@ redBirdData = {
     ],
     "animations": {
         "fly": [0, 3, true, .3],
-        "up": [4, 7, true, .3],
-        "down": [8, 11, true, .4]
+        "up": [4, 7,true, .3],
+        "down": [8, 11, true, .3]
     }
 };
 
@@ -286,6 +286,6 @@ function changeState(state): void {
     }
 
     currentState.start();
-    console.log(currentState.numChildren);
+    //console.log(currentState.numChildren);
 }
  

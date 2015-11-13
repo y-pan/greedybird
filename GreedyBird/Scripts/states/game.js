@@ -24,7 +24,7 @@ var states;
             this._background = new objects.Background();
             this.addChild(this._background);
             // add bird/player
-            this._bird = new objects.Bird();
+            this._bird = new objects.Bird("fly", 150);
             this.addChild(this._bird);
             // health
             this._health = 100;
@@ -119,7 +119,7 @@ var states;
          */
         Game.prototype._updateCoin_ApplyCollisionResult = function () {
             this._coin.update();
-            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._coin, this._bird.radius + this._coin.radius)) {
+            if (!this._isGameOver && this._checkCollisionByCenter(this._bird, this._coin, this._bird.radius + this._coin.radius)) {
                 this._coin.x = -50;
                 this._coinNum++;
                 this._coinLabel.text = this._coinNum.toString();
@@ -134,7 +134,7 @@ var states;
          */
         Game.prototype._updateHeartPlus_ApplyCollisionResult = function () {
             this._heart_plus.update();
-            if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._heart_plus, this._bird.radius + this._heart_plus.radius)) {
+            if (!this._isGameOver && this._checkCollisionByCenter(this._bird, this._heart_plus, this._bird.radius + this._heart_plus.radius)) {
                 this._health = this._health > 95 ? 100 : this._health + 5;
                 createjs.Sound.play("powerUp");
                 this._updateBirdHealth();
@@ -148,7 +148,7 @@ var states;
             // because simply reset the positions of dragons, number of dragons never change
             for (var index = 0; index < this._redDragonNum + this._blackDragonNum; index++) {
                 this._dragons[index].update();
-                if (!this._isGameOver && this._checkCollisionBetween(this._bird, this._dragons[index], this._bird.radius + this._dragons[index].radius)) {
+                if (!this._isGameOver && this._checkCollisionByCenter(this._bird, this._dragons[index], this._bird.radius + this._dragons[index].radius)) {
                     this._health--;
                     this._updateBirdHealth();
                     if (this._health <= 0) {
@@ -168,7 +168,6 @@ var states;
          */
         Game.prototype._updateFeathers_RemoveFeathers = function () {
             if (this._redFeathers.length > 0) {
-                //console.log("Feathers: " + this._redFeathers.length);
                 for (var i = 0, len = this._redFeathers.length; i < len; i++) {
                     this._redFeathers[i].update();
                     if (this._redFeathers[i].y > 680) {
@@ -220,13 +219,19 @@ var states;
         /**
          * Return true if collision occured
          */
-        Game.prototype._checkCollisionBetween = function (object1, object2, distance) {
+        Game.prototype._checkCollisionByCenter = function (object1, object2, distance) {
             if (Math.sqrt(Math.pow((object1.x - object2.x), 2) + Math.pow((object1.y - object2.y), 2)) <= distance) {
                 return true;
             }
         };
         //  PUBLIC METHOD +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         Game.prototype.update = function () {
+            /*
+             if (this._bird.y > this._bird._oldY) { // down
+             } else if (this._bird.y < this._bird._oldY) {// up
+             } else {
+             }
+             */
             this._bird.update();
             this._background.update();
             this._updateDragons_ApplyCollisionResult();
@@ -235,9 +240,11 @@ var states;
             this._updateCoinLabelEffect();
             this._updateHeartPlus_ApplyCollisionResult();
             // reset music
-            if (this._backgroundMusic.off) {
-                this._backgroundMusic.on;
-            }
+            /*
+              if (this._backgroundMusic.off) {
+                  this._backgroundMusic.on;
+              }
+              */
         }; // end of update
         return Game;
     })(objects.Scene);

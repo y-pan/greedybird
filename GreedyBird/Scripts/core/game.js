@@ -111,7 +111,7 @@ redBirdData = {
     "animations": {
         "fly": [0, 3, true, .3],
         "up": [4, 7, true, .3],
-        "down": [8, 11, true, .4]
+        "down": [8, 11, true, .3]
     }
 };
 //     x, y, width, height, imageIndex*, regX*, regY*
@@ -247,6 +247,6 @@ function changeState(state) {
             break;
     }
     currentState.start();
-    console.log(currentState.numChildren);
+    //console.log(currentState.numChildren);
 }
 //# sourceMappingURL=game.js.map

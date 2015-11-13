@@ -7,24 +7,41 @@ var objects;
 (function (objects) {
     var Bird = (function (_super) {
         __extends(Bird, _super);
-        function Bird() {
-            _super.call(this, redBirdAtlas, "fly", 150, 100, 30);
-            this._oldY = stage.mouseY;
+        //public _imageString: string
+        function Bird(imageString, y) {
+            _super.call(this, redBirdAtlas, "fly", 150, y, 30);
+            this._index = 0;
+            //this._imageString = imageString;
+            //this.y = y;
+            this._oldY = this.y;
         }
         /**
          * Update Method for Plane Class
          */
         Bird.prototype.update = function () {
             this.y = (stage.mouseY < this._height) ? this._height : stage.mouseY;
-            //this.gotoAndPlay("fly");
-            //if (this.y > this._oldY + 10) {
-            //    this.gotoAndPlay("down");                
-            //} else if (this.y < this._oldY - 10) {
-            //    this.gotoAndPlay("up");
-            //} else {
-            //    this.gotoAndPlay("fly");
-            //}
+            this.framerate = 0.002; // framerate dosen't work here for gotoAnPlay()
+            /*// going too fast, freamerate not work with gotoAndPlay(), and gotoAndPlay() alone won't loop but stop at the first frame
+
+            this._index++;
+
+            if (this.y < this._oldY) { // up   4-7
+
+                if (this._index > 7) { this._index = 4; }
+            } else if (this.y > this._oldY) { // down 8-11
+                //this._imageString.replace("fly", "down");
+
+                if (this._index > 11) {
+                this._index = 8;
+
+                }
+            } else {
+                if (this._index > 3) { this._index = 0; }
+            }
+
+            
             this._oldY = this.y;
+            */
         };
         return Bird;
     })(objects.GameObject);
