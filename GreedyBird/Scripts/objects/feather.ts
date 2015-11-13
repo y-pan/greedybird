@@ -3,7 +3,7 @@ module objects{
 	export class Feather extends objects.GameObject {
 
 		constructor(x:number,y:number){
-            super(redFeatherAtlas, "blink", x, y, null);
+            super(redFeatherAtlas, "drop", x, y, null);
 		}	
 		
 		/**

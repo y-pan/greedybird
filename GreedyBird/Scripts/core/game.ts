@@ -159,7 +159,7 @@ redFeatherData = {
         [100, 0, 100, 80, 0, 50, 40]        
     ],
     "animations": {
-        dropingout: { frames: [0, 1,true, 0.3]}
+        drop: [0, 1,true, 0.3]
     }
 };
 

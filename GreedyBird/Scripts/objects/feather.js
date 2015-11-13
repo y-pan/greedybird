@@ -8,7 +8,7 @@ var objects;
     var Feather = (function (_super) {
         __extends(Feather, _super);
         function Feather(x, y) {
-            _super.call(this, redFeatherAtlas, "blink", x, y, null);
+            _super.call(this, redFeatherAtlas, "drop", x, y, null);
         }
         /**
          * Update Method for Plane Class
